@@ -8,7 +8,7 @@ DATE: 11/16/2017
 ## UNDER BSD 3-CLAUSE NEW OR REVISED LICENSE
 import pyeasyga
 
-class find_efficacy (object):
+class find_ref (object):
     """
     DEFINE INPUT PARAMETERS AND VARIABLES
     """
@@ -17,7 +17,7 @@ class find_efficacy (object):
         self.q_it = 30000.0 #IT load 30 kW
         self.q_max = 75000.0 #Chiller nominal capacity 75 kW
         self.C_h_ref = 4000.0 #Reference for hot stream capacity
-        self.deltaT_ch = 4.0 #Temperature difference at chiller 2 degC
+        self.deltaT_ch = 2.0 #Temperature difference at chiller 2 degC
         self.c_p_w = 4217.0 #Specific heat capacity of water
         self.c_p_a = 1005.0 #Specific heat capacity of air
         self.T_s_a = 16.0 #Temperature of supply air to the room
@@ -71,7 +71,7 @@ DEFINE FITNESS FUNCTION FOR GA
 """
 def fitness(individual, data):
     #instantiate the find efficacy model
-    effi_ins=find_efficacy()
+    effi_ins=find_ref()
     C_ch = effi_ins.C_ch
     C_cc = effi_ins.C_cc
     #assign values to the unknowns
@@ -110,8 +110,8 @@ ENTRANCE OF THE PROGRAM
 if __name__ == "__main__":
     ## Call GA to solve the equation
     data=[{"effi_ref"},{"C_c_ref"}]
-    ga = pyeasyga.GeneticAlgorithm(data, population_size=2,
-                 generations=10,mutation_probability=0.5,crossover_probability=0.5)
+    ga = pyeasyga.GeneticAlgorithm(data, population_size=10,
+                 generations=20,mutation_probability=0.2,crossover_probability=0.9)
     ga.create_individual = create_individual
     ga.mutate_function = mutate
     ga.fitness_function = fitness               # set the GA's fitness function
